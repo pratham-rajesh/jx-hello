@@ -1,17 +1,14 @@
 pipeline {
-  agent {
-    // Spin up a fresh container for this run
-    docker { image 'node:22-alpine' }
+  agent { docker { image 'node:22-alpine' } }
+  environment {
+    "PATH+EXTRA" = "/usr/local/bin"
   }
-
   stages {
     stage('Test') {
       steps {
-        // Show what environment we're actually in
+        sh 'echo DOCKER=$(which docker || echo "not-found")'
         sh 'node --eval "console.log(process.arch, process.platform)"'
-        // A couple of extra sanity checks (feel free to keep them)
-        sh 'which node && node -v'
-        sh 'uname -a'
+        sh 'node -v'
       }
     }
   }
