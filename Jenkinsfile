@@ -1,15 +1,17 @@
 pipeline {
-  agent { docker { image 'python:3.12-alpine' } }
+  // Runs on your default Jenkins agent; Docker agent is fine too if you prefer
+  agent any
+
   stages {
-    stage('build and inspect') {
+    stage('Build') {
       steps {
-        sh 'python --version'
-        sh 'echo "Hello from Jenkins pipeline"'
+        sh 'echo "Hello World"'
         sh '''
-           echo "Listing workspace contents"
-           ls -lah
+          echo "Multiline shell steps works too"
+          ls -lah
         '''
       }
     }
   }
 }
+
