@@ -1,15 +1,17 @@
 pipeline {
-  // Runs on your default Jenkins agent; Docker agent is fine too if you prefer
-  agent any
+  agent {
+    // Spin up a fresh container for this run
+    docker { image 'node:22-alpine' }
+  }
 
   stages {
-    stage('Build') {
+    stage('Test') {
       steps {
-        sh 'echo "Hello World"'
-        sh '''
-          echo "Multiline shell steps works too"
-          ls -lah
-        '''
+        // Show what environment we're actually in
+        sh 'node --eval "console.log(process.arch, process.platform)"'
+        // A couple of extra sanity checks (feel free to keep them)
+        sh 'which node && node -v'
+        sh 'uname -a'
       }
     }
   }
